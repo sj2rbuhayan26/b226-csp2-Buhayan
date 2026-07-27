@@ -8,21 +8,21 @@ import java.util.List;
 // Call the Service
 public class SongController {
 
-    private final SongService SongService;
+    private final SongService songService;
 
     // Constructor injection
     public SongController(SongService songService) {
-        this.SongService = songService;
+        this.songService = songService;
     }
 
 
     public boolean addSong(String title, String length, String genre, int albumId) {
         Song song = new Song(title, length, genre, albumId);
-        return SongService.addSong(song);
+        return songService.addSong(song);
     }
 
     public List<Song> listSongs() {
-        return SongService.listSongs();
+        return songService.listSongs();
     }
 
     // public boolean updateSong(){}

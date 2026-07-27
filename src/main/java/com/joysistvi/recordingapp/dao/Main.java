@@ -1,18 +1,21 @@
 package com.joysistvi.recordingapp.dao;
 
+import com.joysistvi.recordingapp.View.DashBoard;
 import com.joysistvi.recordingapp.config.DbConnection;
 
 public class Main {
 
     public static void main(String[] args) {
 
-
-        DbConnection dbConnection = new DbConnection();
+//
+//        DbConnection dbConnection = new DbConnection();
+//        DashBoard dashBoard = new DashBoard();
+//        dashBoard.start();
 //        SongDao songDao = new SongDao(dbConnection);
 //        songDao.readSongsWithAlbum();
 
-        UserDao userDao = new UserDao(dbConnection);
-        userDao.registerUser("asta", "asta123");
+//        UserDao userDao = new UserDao(dbConnection);
+//        userDao.registerUser("asta", "asta123");
 
     }
 }
