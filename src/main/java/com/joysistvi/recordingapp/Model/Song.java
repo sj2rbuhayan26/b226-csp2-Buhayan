@@ -1,8 +1,7 @@
 package com.joysistvi.recordingapp.Model;
 
-
-// Model / Encapsulated Class
 public class Song {
+
     private int id;
     private String title;
     private String length;
@@ -13,26 +12,20 @@ public class Song {
     public Song() {
     }
 
-    public Song(int id, String title, String length, String genre, String albumName) {
+    public Song(int id, String title, String length, String genre,
+                String albumName, int albumId) {
         this.id = id;
         this.title = title;
         this.length = length;
         this.genre = genre;
         this.albumName = albumName;
+        this.albumId = albumId;
     }
 
     public Song(String title, String length, String genre, int albumId) {
         this.title = title;
         this.length = length;
         this.genre = genre;
-        this.albumId = albumId;
-    }
-
-    public int getAlbumId() {
-        return albumId;
-    }
-
-    public void setAlbumId(int albumId) {
         this.albumId = albumId;
     }
 
@@ -76,6 +69,14 @@ public class Song {
         this.albumName = albumName;
     }
 
+    public int getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(int albumId) {
+        this.albumId = albumId;
+    }
+
     @Override
     public String toString() {
         return "Song{" +
@@ -84,6 +85,7 @@ public class Song {
                 ", length='" + length + '\'' +
                 ", genre='" + genre + '\'' +
                 ", albumName='" + albumName + '\'' +
+                ", albumId=" + albumId +
                 '}';
     }
 }

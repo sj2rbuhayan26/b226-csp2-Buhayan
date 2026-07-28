@@ -2,9 +2,11 @@ package com.joysistvi.recordingapp.View;
 
 import com.joysistvi.recordingapp.Controller.SongController;
 import com.joysistvi.recordingapp.Model.Album;
+import com.joysistvi.recordingapp.Model.Artists;
 import com.joysistvi.recordingapp.Repository.SongRepo;
 import com.joysistvi.recordingapp.Repository.SongRepositoryImpl;
 import com.joysistvi.recordingapp.Service.SongService;
+import com.joysistvi.recordingapp.Service.SongServiceImp;
 import com.joysistvi.recordingapp.config.DbConnection;
 
 import java.util.Scanner;
@@ -13,7 +15,7 @@ public class DashBoard {
     private Scanner scanner = new Scanner(System.in);
     DbConnection dbConnection = new DbConnection();
     SongRepo songRepo = new SongRepositoryImpl(dbConnection);
-    SongService songService = new SongService(songRepo);
+    SongService songService = new SongServiceImp(songRepo);
     SongController songController = new SongController(songService);
     private SongView songView = new SongView(songController);
 
@@ -59,6 +61,7 @@ public class DashBoard {
                 case 2 :
                     break;
                 case 3 :
+
                     break;
                 case 4 :
                     System.out.println("Exiting Application ....");

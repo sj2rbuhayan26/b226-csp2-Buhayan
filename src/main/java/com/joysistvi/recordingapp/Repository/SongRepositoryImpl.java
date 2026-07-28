@@ -1,7 +1,7 @@
 package com.joysistvi.recordingapp.Repository;
 
-import com.joysistvi.recordingapp.config.DbConnection;
 import com.joysistvi.recordingapp.Model.Song;
+import com.joysistvi.recordingapp.config.DbConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,110 +10,241 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongRepositoryImpl implements SongRepo{
+public class SongRepositoryImpl implements SongRepo {
 
-    private final DbConnection dbConnection; // Composition
+    private final DbConnection dbConnection;
 
-    // Constructor injection
+    // Constructor Injection
     public SongRepositoryImpl(DbConnection dbConnection) {
         this.dbConnection = dbConnection;
     }
 
-    public List<Song> getAllSongs() {
-        List<Song> songs = new ArrayList<>();
-        String query = "SELECT s.id, s.title, s.length, s.genre, a.name " +
-                "FROM songs s " +
-                "JOIN albums a ON s.album_id = a.id " +
-                "WHERE s.is_archived = 0";
+    // CREATE SONG
+    @Override
+    public boolean createSong(Song song) {
+
+        String query = "INSERT INTO songs (title, length, genre, album_id) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = dbConnection.connect();
-             PreparedStatement prep = conn.prepareStatement(query);
-             ResultSet res = prep.executeQuery()) {
+             PreparedStatement prep = conn.prepareStatement(query)) {
 
-
-            while (res.next()) {
-                songs.add(new Song(
-                        res.getInt("id"),
-                        res.getString("title"),
-                        res.getString("length"),
-                        res.getString("genre"),
-                        res.getString("name")
-                ));
-
-            }
-
-        } catch (Exception e) {
-            System.out.println("Read Songs With Album: " + e.getMessage());
-        }
-
-        return songs;
-    }
-    public boolean createSong(Song song) {
-        String query = "INSERT INTO songs (title, length, genre, album_id) " + // create statement
-                "VALUES (?,?,?,?)"; // Anti-SQL Injection
-
-        // Try-with-resources: automatically close opened connection
-        try (Connection connection = dbConnection.connect();
-             PreparedStatement prep = connection.prepareStatement(query);
-        ) {
-            // Bind values to the placeholders in the query
             prep.setString(1, song.getTitle());
             prep.setString(2, song.getLength());
             prep.setString(3, song.getGenre());
             prep.setInt(4, song.getAlbumId());
 
-            // Execute the insert statement
-            int rowsAffected = prep.executeUpdate();
-            return rowsAffected > 0;
+            System.out.println("Album ID being inserted: " + song.getAlbumId());
+
+
+            return prep.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            // Print the error message if something goes wrong
-            System.out.println("Error in inserting song: " + e.getMessage());
-
+            System.out.println("Create Song Error: " + e.getMessage());
         }
+
         return false;
     }
 
-    // Update Song
-    public boolean updateSong(String title, String length, String genre, int id) {
-        String query = "UPDATE songs SET title = ?, length = ?, genre = ? WHERE id = ?"; // parametherized query
+    // READ ALL SONGS
+    @Override
+    public List<Song> getAllSongs() {
+
+        List<Song> songs = new ArrayList<>();
+
+        String query =
+                "SELECT s.id, s.title, s.length, s.genre, a.name, a.id AS albumId " +
+                        "FROM songs s " +
+                        "JOIN albums a ON s.album_id = a.id " +
+                        "WHERE s.is_archived = FALSE";
+
+        try (Connection conn = dbConnection.connect();
+             PreparedStatement prep = conn.prepareStatement(query);
+             ResultSet rs = prep.executeQuery()) {
+
+            while (rs.next()) {
+
+                Song song = new Song(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("length"),
+                        rs.getString("genre"),
+                        rs.getString("name"),
+                        rs.getInt("albumId")
+                );
+
+                songs.add(song);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Read Songs Error: " + e.getMessage());
+        }
+
+        return songs;
+    }
+
+    // UPDATE SONG
+    @Override
+    public boolean updateSong(Song song) {
+
+        String query = "UPDATE songs SET title=?, length=?, genre=? WHERE id=?";
 
         try (Connection conn = dbConnection.connect();
              PreparedStatement prep = conn.prepareStatement(query)) {
 
-            // setting parameter wild cards
-            prep.setString(1, title);
-            prep.setString(2, length);
-            prep.setString(3, genre);
-            prep.setInt(4, id);
+            prep.setString(1, song.getTitle());
+            prep.setString(2, song.getLength());
+            prep.setString(3, song.getGenre());
+            prep.setInt(4, song.getId());
 
-            int rowsAffected = prep.executeUpdate();
-            return rowsAffected > 0;
-
+            return prep.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Update Song: " + e.getMessage());
-
+            e.printStackTrace();
+            System.out.println("Update Song Error: " + e.getMessage());
         }
+
         return false;
     }
 
-    // Hard Delete Song
+    // DELETE SONG
+    @Override
     public boolean deleteSong(int id) {
+
         String query = "DELETE FROM songs WHERE id = ?";
 
         try (Connection conn = dbConnection.connect();
              PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
-            int rows = prep.executeUpdate();
-            return rows > 0;
+
+            return prep.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Delete Song: " + e.getMessage());
+            System.out.println("Delete Song Error: " + e.getMessage());
         }
         return false;
     }
 
+    //ARCHIVED
+    @Override
+    public boolean archiveSong(int id) {
 
+        String query = "UPDATE songs SET is_archived = TRUE WHERE id = ?";
+
+        try (Connection conn = dbConnection.connect();
+             PreparedStatement prep = conn.prepareStatement(query)) {
+
+            prep.setInt(1, id);
+
+            return prep.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Archive Song Error: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    //RESTORE SONG
+    @Override
+    public boolean restoreSong(int id) {
+
+        String query = "UPDATE songs SET is_archived = FALSE WHERE id = ?";
+
+        try (Connection conn = dbConnection.connect();
+             PreparedStatement prep = conn.prepareStatement(query)) {
+
+            prep.setInt(1, id);
+
+            int rows = prep.executeUpdate();
+            System.out.println("Rows updated = " + rows);
+
+            return rows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    //SEARCH SONG
+    @Override
+    public List<Song> searchSong(String keyword) {
+        List<Song> songs = new ArrayList<>();
+
+        String query =
+                "SELECT s.id, s.title, s.length, s.genre, a.name, a.id AS albumId " +
+                        "FROM songs s " +
+                        "JOIN albums a ON s.album_id = a.id " +
+                        "WHERE s.is_archived = FALSE " +
+                        "AND (s.title LIKE ? OR s.genre LIKE ? OR a.name LIKE ?)";
+
+        try (Connection conn = dbConnection.connect();
+             PreparedStatement prep = conn.prepareStatement(query)) {
+
+            String search = "%" + keyword + "%";
+
+            prep.setString(1, search);
+            prep.setString(2, search);
+            prep.setString(3, search);
+
+            ResultSet rs = prep.executeQuery();
+
+            while (rs.next()) {
+                Song song = new Song(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("length"),
+                        rs.getString("genre"),
+                        rs.getString("name"),
+                        rs.getInt("albumId")
+                );
+
+                songs.add(song);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Search Song Error: " + e.getMessage());
+        }
+
+        return songs;
+    }
+
+    //READ ACHIVED SONG
+    @Override
+    public List<Song> readArchivedSong() {
+
+        List<Song> songs = new ArrayList<>();
+
+        String query =
+                "SELECT s.id, s.title, s.length, s.genre, a.name, a.id AS albumId " +
+                        "FROM songs s " +
+                        "JOIN albums a ON s.album_id = a.id " +
+                        "WHERE s.is_archived = TRUE";
+
+        try (Connection conn = dbConnection.connect();
+             PreparedStatement prep = conn.prepareStatement(query);
+             ResultSet rs = prep.executeQuery()) {
+
+            while (rs.next()) {
+
+                Song song = new Song(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("length"),
+                        rs.getString("genre"),
+                        rs.getString("name"),
+                        rs.getInt("albumId")
+                );
+
+                songs.add(song);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Read Archived Songs Error: " + e.getMessage());
+        }
+
+        return songs;
+    }
 }

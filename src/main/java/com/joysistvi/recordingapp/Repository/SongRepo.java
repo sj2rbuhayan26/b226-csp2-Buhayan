@@ -9,6 +9,10 @@ import java.util.List;
 public interface SongRepo {
     public List<Song> getAllSongs();
     public boolean createSong(Song song);
-    public boolean updateSong(String title, String length, String genre, int id);
+    public boolean updateSong(Song song);
     public boolean deleteSong(int id);
+    public boolean archiveSong(int id);
+    public boolean restoreSong(int id);
+    public List<Song> searchSong(String keyword);
+    public List<Song> readArchivedSong();
 }
