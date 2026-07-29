@@ -21,19 +21,19 @@ public class PlaylistRepositoryImpl implements PlaylistRepo {
     @Override
     public void addPlaylist(int userId) {
 
-        String sql = "INSERT INTO playlist(user_id) VALUES (?)";
-
+        String sql = "INSERT INTO playlist(user_id, date_created) VALUES (?, ?)";
 
         try(Connection conn = dbConnection.connect();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            stmt.setInt(1, userId);
 
-            stmt.setInt(1,userId);
+            stmt.setDate(2, new java.sql.Date(System.currentTimeMillis()));
 
             stmt.executeUpdate();
 
 
-        } catch(SQLException e){
+        } catch(SQLException e) {
             e.printStackTrace();
         }
     }
@@ -91,19 +91,29 @@ public class PlaylistRepositoryImpl implements PlaylistRepo {
     @Override
     public void deletePlaylist(int id) {
 
-        String sql = "DELETE FROM playlist WHERE id=?";
+        String deleteSongs = "DELETE FROM playlist_songs WHERE playlist_id=?";
 
-        try(Connection conn = dbConnection.connect();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String deletePlaylist = "DELETE FROM playlist WHERE id=?";
 
-            stmt.setInt(1, id);
 
-            stmt.executeUpdate();
+        try(Connection conn = dbConnection.connect()) {
 
-            System.out.println("Playlist deleted successfully!");
+
+            // Delete songs inside playlist first
+            PreparedStatement stmt1 = conn.prepareStatement(deleteSongs);
+            stmt1.setInt(1, id);
+            stmt1.executeUpdate();
+
+
+            // Delete playlist
+            PreparedStatement stmt2 = conn.prepareStatement(deletePlaylist);
+            stmt2.setInt(1, id);
+            stmt2.executeUpdate();
 
         } catch(SQLException e) {
+
             e.printStackTrace();
+
         }
     }
 
