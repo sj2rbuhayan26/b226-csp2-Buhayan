@@ -1,54 +1,32 @@
 package com.joysistvi.recordingapp.Model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Playlist {
-    private int Id;
-    private String userId;
+
+    private int id;
+    private int userId;
     private Date dateCreated;
 
-    public Playlist(){}
 
-    public Playlist(int Id, String userId, Date dateCreated){
-        this.Id = Id;
+    public Playlist(int id, int userId, Date dateCreated) {
+        this.id = id;
         this.userId = userId;
         this.dateCreated = dateCreated;
-
     }
 
-    public Playlist(int id) {
-        Id = id;
-    }
-
-    public Playlist(String userId) {
-        this.userId = userId;
-    }
-
-    public Playlist(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(int id) {
-        Id = id;
-    }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public Date getDateCreated() {
         return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
     }
 }

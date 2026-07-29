@@ -7,15 +7,13 @@ public class Album {
     private int year;
     private String artistsId;
 
-    public Album(){}
+    public Album() {}
 
-    public Album(String id, String name, int year, String artistsId){
+    public Album(String id, String name, int year, String artistsId) {
         this.id = id;
         this.name = name;
         this.year = year;
         this.artistsId = artistsId;
-
-
     }
 
     public String getId() {
@@ -23,7 +21,7 @@ public class Album {
     }
 
     public void setId(String id) {
-        id = id;
+        this.id = id;      // Fixed
     }
 
     public String getName() {
@@ -50,5 +48,3 @@ public class Album {
         this.artistsId = artistsId;
     }
 }
-
-

@@ -5,8 +5,27 @@ import com.joysistvi.recordingapp.Repository.SongRepo;
 import com.joysistvi.recordingapp.Repository.SongRepositoryImpl;
 import com.joysistvi.recordingapp.Service.SongService;
 import com.joysistvi.recordingapp.Service.SongServiceImp;
-import com.joysistvi.recordingapp.View.SongView;
+import com.joysistvi.recordingapp.View.*;
 import com.joysistvi.recordingapp.config.DbConnection;
+import com.joysistvi.recordingapp.Repository.AlbumRepo;
+import com.joysistvi.recordingapp.Repository.AlbumRepositoryImpl;
+
+import com.joysistvi.recordingapp.Service.AlbumService;
+import com.joysistvi.recordingapp.Service.AlbumServiceImpl;
+import com.joysistvi.recordingapp.Controller.AlbumController;
+
+import com.joysistvi.recordingapp.Repository.PlaylistRepo;
+import com.joysistvi.recordingapp.Repository.PlaylistRepositoryImpl;
+import com.joysistvi.recordingapp.Service.PlaylistService;
+import com.joysistvi.recordingapp.Service.PlaylistServiceImpl;
+import com.joysistvi.recordingapp.Controller.PlaylistController;
+
+import com.joysistvi.recordingapp.Repository.UserRepo;
+import com.joysistvi.recordingapp.Repository.UserRepositoryImpl;
+import com.joysistvi.recordingapp.Service.UserService;
+import com.joysistvi.recordingapp.Service.UserServiceImpl;
+import com.joysistvi.recordingapp.Controller.UserController;
+
 
 import java.util.Scanner;
 
@@ -23,44 +42,44 @@ public class Home {
         SongController songController = new SongController(songService);
         SongView songView = new SongView(songController);
 
-        int choice;
+        AlbumRepo albumRepo = new AlbumRepositoryImpl(dbConnection);
+        AlbumService albumService = new AlbumServiceImpl(albumRepo);
+        AlbumController albumController = new AlbumController(albumService);
+        AlbumView albumView = new AlbumView(albumController);
 
-        do {
-            printMainMenu();
-            choice = readInt(scanner);
 
-            switch (choice) {
-                case 1:
-                    songView.showMenu();
-                    break;
+        // Playlist
+        PlaylistRepo playlistRepo = new PlaylistRepositoryImpl(dbConnection);
+        PlaylistService playlistService = new PlaylistServiceImpl(playlistRepo);
+        PlaylistController playlistController = new PlaylistController(playlistService);
+        PlaylistView playlistView = new PlaylistView(playlistController);
 
-                case 2:
-                    System.out.println("Album Management is not available yet.");
-                    break;
+        // User
+        UserRepo userRepo = new UserRepositoryImpl(dbConnection);
+        UserService userService = new UserServiceImpl(userRepo);
+        UserController userController = new UserController(userService);
+        UserView userView = new UserView(userController);
 
-                case 3:
-                    System.out.println("Artist Management is not available yet.");
-                    break;
+        UserDashboardView userDashboardView = new UserDashboardView(
+                playlistView
+        );
+        AdminView adminView = new AdminView(
+                songView,
+                albumView,
+                playlistView,
+                userView
+        );
 
-                case 4:
-                    System.out.println("Playlist Management is not available yet.");
-                    break;
+        LoginView loginView = new LoginView(
+                userController,
+                adminView,
+                userDashboardView
+        );
 
-                case 5:
-                    System.out.println("User Management is not available yet.");
-                    break;
-
-                case 0:
-                    System.out.println("Thank you for using Recording Studio App!");
-                    break;
-
-                default:
-                    System.out.println("Invalid choice!");
-            }
-
-        } while (choice != 0);
+        loginView.login();
 
         scanner.close();
+
     }
 
     private static void printMainMenu() {

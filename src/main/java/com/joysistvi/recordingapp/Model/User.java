@@ -2,29 +2,35 @@ package com.joysistvi.recordingapp.Model;
 
 public class User {
 
-    private String userId;
+    private int id;
     private String username;
     private String password;
+    private String role;
 
-    public User() {
-    }
-
-    public User(String userId, String username, String password) {
-        this.userId = userId;
+    public User(int id, String username, String password, String role) {
+        this.id = id;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public int getId() {
+        return id;
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public String getRole(){
+        return role;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setUsername(String username) {
@@ -34,8 +40,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getPassword() {
-        return password;
+    public void setRole(String role){
+        this.role = role;
     }
+
 }

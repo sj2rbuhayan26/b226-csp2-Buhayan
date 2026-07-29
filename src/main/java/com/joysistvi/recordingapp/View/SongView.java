@@ -1,6 +1,7 @@
 package com.joysistvi.recordingapp.View;
 
 import com.joysistvi.recordingapp.Controller.SongController;
+import com.joysistvi.recordingapp.Home;
 import com.joysistvi.recordingapp.Model.Song;
 
 import java.util.List;
@@ -134,10 +135,9 @@ public class SongView {
 
                     songController.searchSong(keyword);
                     break;
-
-
-                default:
-                    System.out.println("Invalid choice");
+                case 0 :
+                    System.out.println("Back to Menu");
+                    return;
             }
         } while (choice != 0);
     }
