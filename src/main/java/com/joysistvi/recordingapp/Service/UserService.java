@@ -21,7 +21,8 @@ public interface UserService {
 
     // Delete
     void deleteUser(int id);
-
+    // Register
+    boolean register(User user);
     // Login
     User login(String username, String password);
 }

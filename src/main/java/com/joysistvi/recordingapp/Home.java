@@ -69,7 +69,7 @@ public class Home {
                 userDashboardView
         );
 
-        loginView.login();
+        loginView.showMenu();
 
         scanner.close();
 

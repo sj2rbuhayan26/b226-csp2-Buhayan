@@ -38,6 +38,10 @@ public class UserController {
         userService.deleteUser(id);
     }
 
+    // Register User
+    public boolean register(User user){
+        return userService.register(user);
+    }
     // Login
     public User login(String username, String password) {
         return userService.login(username, password);

@@ -16,5 +16,7 @@ public interface UserRepo {
 
     User getUserById(int id);
 
+    boolean register(User user);
+
     User login(String username, String password);
 }

@@ -38,6 +38,10 @@ public class UserServiceImpl implements UserService {
         userRepo.deleteUser(id);
     }
     @Override
+    public boolean register(User user){
+        return userRepo.register(user);
+    }
+    @Override
     public User login(String username, String password){
         return userRepo.login(username, password);
     }

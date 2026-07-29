@@ -45,6 +45,27 @@ public class UserRepositoryImpl implements UserRepo {
         return null;
     }
     @Override
+    public boolean register(User user) {
+
+        String sql = "INSERT INTO user(username,password,role) VALUES(?,?,?)";
+
+        try(Connection conn = dbConnection.connect();
+            PreparedStatement stmt = conn.prepareStatement(sql)){
+
+            stmt.setString(1,user.getUsername());
+            stmt.setString(2,user.getPassword());
+            stmt.setString(3,user.getRole());
+
+            return stmt.executeUpdate()>0;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
     public void addUser(User user) {
 
         String sql = "INSERT INTO user(username, password, role) VALUES (?, ?, ?)";
