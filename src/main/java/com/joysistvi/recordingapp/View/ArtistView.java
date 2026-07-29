@@ -50,9 +50,14 @@ public class ArtistView {
             }
         }while (choice == 0);
     }
-    private void addArtist(){
-        System.out.println("Artist Name : ");
+    private void addArtist() {
+        System.out.print("Artist Name: ");
         String name = scanner.nextLine();
+
+        Artist artist = new Artist(name);
+
+        artistController.addArtist(artist);
+
     }
     private void viewArtist(){
         List<Artist> artists = artistController.getAllArtist();

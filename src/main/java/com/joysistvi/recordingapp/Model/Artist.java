@@ -10,6 +10,13 @@ public class Artist {
         this.name = name;
     }
 
+    public Artist(String name) {
+        this.name = name;
+    }
+
+    public Artist() {
+    }
+
     public int getId() {
         return id;
     }

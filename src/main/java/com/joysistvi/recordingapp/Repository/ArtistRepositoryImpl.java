@@ -52,7 +52,6 @@ public class ArtistRepositoryImpl implements ArtistRepo {
             stmt.setString(1, artist.getName());
             stmt.executeUpdate();
 
-            System.out.println("Artist Added Successfully");
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -92,7 +91,6 @@ public class ArtistRepositoryImpl implements ArtistRepo {
 
             stmt.executeUpdate();
 
-            System.out.println("Artist Updated Successfully");
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -108,7 +106,6 @@ public class ArtistRepositoryImpl implements ArtistRepo {
 
             stmt.executeUpdate();
 
-            System.out.println("Artist Delete Successfully");
         } catch (SQLException e) {
             e.printStackTrace();
         }
