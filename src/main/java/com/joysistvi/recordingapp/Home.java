@@ -1,30 +1,10 @@
 package com.joysistvi.recordingapp;
 
-import com.joysistvi.recordingapp.Controller.SongController;
-import com.joysistvi.recordingapp.Repository.SongRepo;
-import com.joysistvi.recordingapp.Repository.SongRepositoryImpl;
-import com.joysistvi.recordingapp.Service.SongService;
-import com.joysistvi.recordingapp.Service.SongServiceImp;
+import com.joysistvi.recordingapp.Controller.*;
+import com.joysistvi.recordingapp.Repository.*;
+import com.joysistvi.recordingapp.Service.*;
 import com.joysistvi.recordingapp.View.*;
 import com.joysistvi.recordingapp.config.DbConnection;
-import com.joysistvi.recordingapp.Repository.AlbumRepo;
-import com.joysistvi.recordingapp.Repository.AlbumRepositoryImpl;
-
-import com.joysistvi.recordingapp.Service.AlbumService;
-import com.joysistvi.recordingapp.Service.AlbumServiceImpl;
-import com.joysistvi.recordingapp.Controller.AlbumController;
-
-import com.joysistvi.recordingapp.Repository.PlaylistRepo;
-import com.joysistvi.recordingapp.Repository.PlaylistRepositoryImpl;
-import com.joysistvi.recordingapp.Service.PlaylistService;
-import com.joysistvi.recordingapp.Service.PlaylistServiceImpl;
-import com.joysistvi.recordingapp.Controller.PlaylistController;
-
-import com.joysistvi.recordingapp.Repository.UserRepo;
-import com.joysistvi.recordingapp.Repository.UserRepositoryImpl;
-import com.joysistvi.recordingapp.Service.UserService;
-import com.joysistvi.recordingapp.Service.UserServiceImpl;
-import com.joysistvi.recordingapp.Controller.UserController;
 
 
 import java.util.Scanner;
@@ -37,16 +17,23 @@ public class Home {
 
         DbConnection dbConnection = new DbConnection();
 
+        // Song
         SongRepo songRepo = new SongRepositoryImpl(dbConnection);
         SongService songService = new SongServiceImp(songRepo);
         SongController songController = new SongController(songService);
         SongView songView = new SongView(songController);
 
+        // Album
         AlbumRepo albumRepo = new AlbumRepositoryImpl(dbConnection);
         AlbumService albumService = new AlbumServiceImpl(albumRepo);
         AlbumController albumController = new AlbumController(albumService);
         AlbumView albumView = new AlbumView(albumController);
 
+        // Artist
+        ArtistRepo artistRepo = new ArtistRepositoryImpl(dbConnection);
+        ArtistService artistService = new ArtistServiceImpl(artistRepo);
+        ArtistController artistController = new ArtistController(artistService);
+        ArtistView artistView = new ArtistView(artistController);
 
         // Playlist
         PlaylistRepo playlistRepo = new PlaylistRepositoryImpl(dbConnection);
@@ -60,14 +47,20 @@ public class Home {
         UserController userController = new UserController(userService);
         UserView userView = new UserView(userController);
 
+        //
+
         UserDashboardView userDashboardView = new UserDashboardView(
-                playlistView
+                playlistView,
+                albumView,
+                artistView,
+                songView
         );
         AdminView adminView = new AdminView(
                 songView,
                 albumView,
                 playlistView,
-                userView
+                userView,
+                artistView
         );
 
         LoginView loginView = new LoginView(

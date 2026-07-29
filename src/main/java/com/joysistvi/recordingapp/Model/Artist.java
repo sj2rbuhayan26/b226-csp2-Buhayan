@@ -1,27 +1,25 @@
 package com.joysistvi.recordingapp.Model;
 
-public class Artists {
-    
-    private int Id;
+public class Artist {
+
+    private int id;
     private String name;
 
-    public Artists(){}
-
-    public Artists(int Id, String name){
-        this.Id = Id;
+    public Artist(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
     public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
+        return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {

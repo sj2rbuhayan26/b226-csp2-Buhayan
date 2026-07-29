@@ -1,17 +1,21 @@
 package com.joysistvi.recordingapp.View;
 
-import com.joysistvi.recordingapp.Controller.PlaylistController;
-import com.joysistvi.recordingapp.Model.Playlist;
-
 import java.util.Scanner;
 
 public class UserDashboardView {
     private final PlaylistView playlistView;
+    private final AlbumView albumView;
+    private final ArtistView artistVIew;
+    private final SongView songView;
     private final Scanner scanner = new Scanner(System.in);
 
-    public UserDashboardView(PlaylistView playlistView){
+    public UserDashboardView(PlaylistView playlistView, AlbumView albumView, ArtistView artistVIew, SongView songView) {
         this.playlistView = playlistView;
+        this.albumView = albumView;
+        this.artistVIew = artistVIew;
+        this.songView = songView;
     }
+
     public void showMenu() {
 
         int choice;
@@ -32,13 +36,16 @@ public class UserDashboardView {
 
                 case 1:
                     System.out.println("Browse Song");
+                    songView.showMenu();
                     break;
 
                 case 2:
                     System.out.println("Browse Album");
+                    albumView.showMenu();
                     break;
                 case 3:
                     System.out.println("Browse Artist");
+                    artistVIew.showMenu();
                     break;
                 case 4 :
                     System.out.println("My Playlist");

@@ -2,7 +2,7 @@ package com.joysistvi.recordingapp.View;
 
 import com.joysistvi.recordingapp.Controller.SongController;
 import com.joysistvi.recordingapp.Model.Album;
-import com.joysistvi.recordingapp.Model.Artists;
+import com.joysistvi.recordingapp.Model.Artist;
 import com.joysistvi.recordingapp.Repository.SongRepo;
 import com.joysistvi.recordingapp.Repository.SongRepositoryImpl;
 import com.joysistvi.recordingapp.Service.SongService;
@@ -61,7 +61,6 @@ public class DashBoard {
                 case 2 :
                     break;
                 case 3 :
-
                     break;
                 case 4 :
                     System.out.println("Exiting Application ....");
