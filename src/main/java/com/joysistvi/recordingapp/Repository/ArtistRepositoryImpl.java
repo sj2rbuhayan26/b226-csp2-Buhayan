@@ -20,7 +20,7 @@ public class ArtistRepositoryImpl implements ArtistRepo {
     @Override
     public Artist getArtistById(int id) {
 
-        String sql = "SELECT * FROM artist WHERE id = ?";
+        String sql = "SELECT * FROM artists WHERE id = ?";
 
         try (Connection conn = dbConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -95,19 +95,28 @@ public class ArtistRepositoryImpl implements ArtistRepo {
             e.printStackTrace();
         }
     }
+
     @Override
-    public void deleteArtist(int id){
-        String sql = "DELETE FROM artists WHERE id =?";
+    public void deleteArtist(int id) {
 
-        try (Connection conn = dbConnection.connect();
-            PreparedStatement stmt = conn.prepareStatement(sql)){
+        String deleteAlbums = "DELETE FROM albums WHERE artists_id = ?";
+        String deleteArtist = "DELETE FROM artists WHERE id = ?";
 
-            stmt.setInt(1,id);
+        try (Connection conn = dbConnection.connect()) {
 
-            stmt.executeUpdate();
+            // Delete albums
+            PreparedStatement stmt1 = conn.prepareStatement(deleteAlbums);
+            stmt1.setInt(1, id);
+            stmt1.executeUpdate();
+
+            // Delete artist
+            PreparedStatement stmt2 = conn.prepareStatement(deleteArtist);
+            stmt2.setInt(1, id);
+            stmt2.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 }
